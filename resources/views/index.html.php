@@ -21,8 +21,8 @@
                 </div>
 
                 <div class="form-group">
-                        <label for="userfile">Envoyer un fichier</label>
-                        <input type="file" class="btn btn-primary" id="userfile" name="userfile">
+                        <label for="fileToUpload">Envoyer un fichier</label>
+                        <input type="file" class="btn btn-primary" id="fileToUpload" name="fileToUpload">
                 </div>
 
                 <input type="submit" value="Envoyer">

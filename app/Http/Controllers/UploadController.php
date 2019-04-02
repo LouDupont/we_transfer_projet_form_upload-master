@@ -37,24 +37,17 @@ function create()
  * @param  \Illuminate\Http\Request  $request
  * @return \Illuminate\Http\Response
  */
-function store($conn, $lastId)
+
+function store()
 {
+    $target_dir = ROOT_DIR . '/public/upload/';  
+    $target_file = $target_dir . basename($_FILES["fileToUpload"]["tmp_name"]); // on crée le nom du fichier dans notre dossier
+    move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_file); // on copie le contenu du fichier dans le contenant ci-dessus
+    $nom_fichier = $_FILES["fileToUpload"]["name"];
+    $nom_fichier_tmp = basename($_FILES["fileToUpload"]["tmp_name"]);
 
-    if(  isset($_FILES['userfile'])   ){
-        $directory = ROOT_DIR .'/public/upload/'. basename($_FILES['userfile']['name']);
-        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $directory)) {
-
-            $url_image = basename($_FILES['userfile']['name']);
-            $stmt = $conn->prepare("INSERT INTO `fichiers` (`url_image`, `exp_id`) VALUES ('$url_image', '$lastId');");
-            $stmt->execute();
-            $message_transaction = "SUCCES";
-        } else {
-            $message_transaction = "ERREUR";
-        }
-    }
-
-    require(ROOT_DIR.'/resources/views/store.html.php');
-
+    $array_fichier = [$nom_fichier, $nom_fichier_tmp];
+    return $array_fichier;
 }
 
 /**
@@ -86,6 +79,7 @@ function edit($id)
  * @param  int  $id
  * @return \Illuminate\Http\Response
  */
+
 function update(Request $request, $id)
 {
     //
@@ -97,8 +91,8 @@ function update(Request $request, $id)
  * @param  int  $id
  * @return \Illuminate\Http\Response
  */
+
 function destroy($id)
 {
     //
 }
-

@@ -37,7 +37,7 @@ function create()
  * @param  \Illuminate\Http\Request  $request
  * @return \Illuminate\Http\Response
  */
-function store($conn)
+function store($conn, $array_fichier)
 {
     $mail_exp = $_POST['mail_exp'];
     $mail_dest = $_POST['mail_dest'];
@@ -48,14 +48,18 @@ function store($conn)
     $stmt->bindParam(':mail_exp', $mail_exp);
     $stmt->bindParam(':mail_dest', $mail_dest);
     $stmt->bindParam(':message', $message);
-    
     $stmt->execute();
 
     $stmt = $conn->prepare("SELECT LAST_INSERT_ID();");
     $stmt->execute();
     $lastId = $stmt->fetch();
+    $lastId = $lastId["LAST_INSERT_ID()"];
+    $nom_fichier = $array_fichier[0];
+    $nom_fichier_tmp = $array_fichier[1];
 
-    return $lastId["LAST_INSERT_ID()"];
+    $stmt = $conn->prepare("INSERT INTO `fichiers` ( `nom_fichier` , `nom_fichier_tmp`, `exp_id`) VALUES ('$nom_fichier', '$nom_fichier_tmp', '$lastId')");
+
+    $stmt->execute();
 }
 
 /**
